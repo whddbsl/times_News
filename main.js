@@ -5,11 +5,9 @@ menus.forEach((menu) =>
 );
 
 let searchButton = document.getElementById("search-button");
+let url;
 
-const getLatestNews = async () => {
-  let url = new URL(
-    `https://newsapi.org/v2/top-headlines?country=us&apiKey=fc397d67c3c14da2b18c58fea9081b47&pageSize=10`
-  );
+const getNews = async() => {
   let header = new Headers({
     "x-api-key": "fc397d67c3c14da2b18c58fea9081b47",
   });
@@ -19,37 +17,29 @@ const getLatestNews = async () => {
   news = data.articles;
 
   render();
+}
+
+const getLatestNews = async () => {
+  url = new URL(
+    `https://newsapi.org/v2/top-headlines?country=us&apiKey=fc397d67c3c14da2b18c58fea9081b47&pageSize=10`
+  );
+  getNews()
 };
 
 const getNewsByTopic = async (event) => {
-  console.log("clicked", event.target.textContent);
   let topic = event.target.textContent.toLowerCase();
-  let url = new URL(
+  url = new URL(
     `https://newsapi.org/v2/top-headlines?country=us&apiKey=fc397d67c3c14da2b18c58fea9081b47&pageSize=10&category=${topic}`
   );
-  let header = new Headers({
-    "x-api-key": "fc397d67c3c14da2b18c58fea9081b47",
-  });
-  let response = await fetch(url, { headers: header });
-  let data = await response.json();
-  news = data.articles;
-
-  render();
+  getNews()
 };
 
 const getNewsByKeyword = async() => {
   let keyword = document.getElementById("search-input").value;
-  let url = new URL(
+  url = new URL(
     `https://newsapi.org/v2/everything?q=${keyword}&apiKey=fc397d67c3c14da2b18c58fea9081b47&pageSize=10`
   );
-  let header = new Headers({
-    "x-api-key": "fc397d67c3c14da2b18c58fea9081b47",
-  });
-  let response = await fetch(url, { headers: header });
-  let data = await response.json();
-  news = data.articles;
-
-  render();
+  getNews()
 };
 
 const render = () => {
